@@ -370,10 +370,33 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	unsigned long page;
 	int block,i;
 
+	struct swap_node swap_list;
+	struct swap_node head = swap_list;
+
 	address &= 0xfffff000;
-	tmp = address - current->start_code;
+	tmp = address - current->start_code;//tmp是逻辑地址
+	//add by renq
+	//从swap文件(或者是swap_list?)中找address处是否曾被换出，如果所需要的页面在交换文件中，换入
+	//
+	
+	while(swap_list->page != tmp)//没找到曾经换出该页
+	{
+		if(swap_list->page == tmp)//所需的页在swap中，换入
+		{
+			//
+			swap_list = head;//为了下次依然从头开始查找	
+			break;
+		}
+		if(swap_list->next = NULL)
+			break;
+		swap_list = swap_list->next;
+	}
+	//add by renq
+	//fprintk(3, "Swap in:%ld\tLiner Address:%ld\tPysical Address:%ld\n", current->pid,address,0);//这里物理内存地址需要修改
+	//end add by renq
 	if (!current->executable || tmp >= current->end_data) {
 		get_empty_page(address);
+
 		return;
 	}
 	if (share_page(tmp))

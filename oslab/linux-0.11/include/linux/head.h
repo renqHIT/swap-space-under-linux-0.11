@@ -5,6 +5,19 @@ typedef struct desc_struct {
 	unsigned long a,b;
 } desc_table[256];
 
+//add by renq
+typedef struct swap_info_tag {
+	//to be continue
+} swap_info;
+
+typedef struct swap_node_tag {
+	unsigned long page; //logical address
+	unsigned long frame; //physical address
+	struct swap _info info;
+	struct swap_node_tag next;	
+}swap_node;
+//add by renq
+
 extern unsigned long pg_dir[1024];
 extern desc_table idt,gdt;
 
