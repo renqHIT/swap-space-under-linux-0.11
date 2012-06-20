@@ -6,15 +6,16 @@ typedef struct desc_struct {
 } desc_table[256];
 
 //add by renq
-typedef struct swap_info_tag {
+typedef struct swap_info{
+	int valid;
 	//to be continue
 } swap_info;
 
-typedef struct swap_node_tag {
+typedef struct swap_node {
 	unsigned long page; //logical address
 	unsigned long frame; //physical address
-	struct swap _info info;
-	struct swap_node_tag next;	
+	struct swap_info info;
+	struct swap_node *next;	
 }swap_node;
 //add by renq
 

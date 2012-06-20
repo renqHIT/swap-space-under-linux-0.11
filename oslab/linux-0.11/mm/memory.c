@@ -367,23 +367,30 @@ void do_no_page(unsigned long error_code,unsigned long address)
 {
 	int nr[4];
 	unsigned long tmp;
-	unsigned long page;
+	unsigned long page,frame;
 	int block,i;
 
+	off_t swap_pos;//swap文件当前指针
 	struct swap_node swap_list;
 	struct swap_node head = swap_list;
 
 	address &= 0xfffff000;
 	tmp = address - current->start_code;//tmp是逻辑地址
+	page = (tmp - LOW_MEM) >> 12;
 	//add by renq
 	//从swap文件(或者是swap_list?)中找address处是否曾被换出，如果所需要的页面在交换文件中，换入
 	//
 	
 	while(swap_list->page != tmp)//没找到曾经换出该页
 	{
-		if(swap_list->page == tmp)//所需的页在swap中，换入
+		if(swap_list->page == tmp && swap_list->swap_info->valid == 1)//所需的页在swap中而且有效，换入
 		{
 			//
+			f_write_swap(tmp);// 把tmp这一页内容写入swap
+			swap_pos = current->filp[7].f_pos;		
+		
+			fprintk(3,"Swap in:Page = %ld, Frame = ",tmp);			
+	
 			swap_list = head;//为了下次依然从头开始查找	
 			break;
 		}

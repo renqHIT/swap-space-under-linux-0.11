@@ -107,7 +107,7 @@ void main(void)		/* This really IS void, no error here. */
  * Interrupts are still disabled. Do necessary setups, then
  * enable them
  */
-	int	tmp_fd;//add by renq
+	int	tmp_fd;/*add by renq*/
 
  	ROOT_DEV = ORIG_ROOT_DEV;
  	drive_info = DRIVE_INFO;
@@ -143,7 +143,7 @@ void main(void)		/* This really IS void, no error here. */
 	(void) dup(0);		//文件描述符1也和/dev/tty0关联
 	(void) dup(0);		//文件描述符2也和/dev/tty0关联
 	tmp_fd = open("/var/swap.log",O_CREAT|O_TRUNC|O_WRONLY,0666);//swap.log文件描述符是几？
-	printf("swap.log open success, fd = %d\n",tmp_fd);
+	//printf("swap.log open success, fd = %d\n",tmp_fd);
 	//end add by renq
 	if (!fork()) {		/* we count on this going ok */
 		init();
@@ -178,7 +178,7 @@ static char * envp[] = { "HOME=/usr/root", NULL };
 void init(void)
 {
 	int pid,i;
-	int tmp_fd;// add by renq
+	int swap_fd;// add by renq
 
 	setup((void *) &drive_info);
 	(void) open("/dev/tty0",O_RDWR,0);
@@ -188,8 +188,8 @@ void init(void)
 		NR_BUFFERS*BLOCK_SIZE);
 	printf("Free mem: %d bytes\n\r",memory_end-main_memory_start);
 	/*add by renq*/
-	tmp_fd = open("/var/swap",O_CREAT|O_TRUNC,0666);//swap的文件描述符是几？
-	printf("Open swap file success, fd = %d\n",tmp_fd);
+	swap_fd = open("/var/swap",O_CREAT|O_TRUNC,0666);//swap的文件描述符是几？ 貌似是7
+	printf("Open swap file success, fd = %d\n",swap_fd);
 	/*end add*/
 	if (!(pid=fork())) {
 		close(0);
@@ -210,7 +210,7 @@ void init(void)
 			close(0);close(1);close(2);
 			setsid();
 			(void) open("/dev/tty0",O_RDWR,0);
-			(void) dup(0);
+		(void) dup(0);
 			(void) dup(0);
 			_exit(execve("/bin/sh",argv,envp));
 		}
