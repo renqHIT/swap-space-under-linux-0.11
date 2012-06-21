@@ -368,11 +368,12 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	int nr[4];
 	unsigned long tmp;
 	unsigned long page,frame;
+	unsigned long new_page;
 	int block,i;
 
 	off_t swap_pos;//swap文件当前指针
-	struct swap_node swap_list;
-	struct swap_node head = swap_list;
+	struct swap_node * swap_list = NULL;
+	struct swap_node * head = swap_list;
 
 	address &= 0xfffff000;
 	tmp = address - current->start_code;//tmp是逻辑地址
@@ -383,16 +384,26 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	
 	while(swap_list->page != tmp)//没找到曾经换出该页
 	{
-		if(swap_list->page == tmp && swap_list->swap_info->valid == 1)//所需的页在swap中而且有效，换入
+		if(swap_list == NULL)
+			break;
+		if(swap_list->page == tmp && swap_list->valid == 1)//所需的页在swap中而且有效
 		{
 			//
-			f_write_swap(tmp);// 把tmp这一页内容写入swap
-			swap_pos = current->filp[7].f_pos;		
-		
-			fprintk(3,"Swap in:Page = %ld, Frame = ",tmp);			
-	
+			frame = swap_list->frame;//在swap中的位置位frame
+			printk("page : %ld ,frame : %ld\n",page,frame);//调试用，向终端显示
+			fprintk(3,"Swap in:Page = %ld, Frame = %ld",page,frame); //向log文件写入
+			f_read_swap(frame);// 读swap，写入缺页进程内存,所读一页内容写至char * buf中
+			//printk("content : %s",)
+			
+			new_page = get_free_page();
+
+			swap_pos = task[0]->filp[7]->f_pos;			
+					
+			swap_list->valid = 0;//置为无效
 			swap_list = head;//为了下次依然从头开始查找	
-			break;
+			if (put_page(new_page,address))//建立映射
+				break;
+			return ；
 		}
 		if(swap_list->next = NULL)
 			break;

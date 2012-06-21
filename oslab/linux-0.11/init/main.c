@@ -143,7 +143,7 @@ void main(void)		/* This really IS void, no error here. */
 	(void) dup(0);		//文件描述符1也和/dev/tty0关联
 	(void) dup(0);		//文件描述符2也和/dev/tty0关联
 	tmp_fd = open("/var/swap.log",O_CREAT|O_TRUNC|O_WRONLY,0666);//swap.log文件描述符是几？
-	//printf("swap.log open success, fd = %d\n",tmp_fd);
+	printf("swap.log open success, fd = %d\n",tmp_fd);
 	//end add by renq
 	if (!fork()) {		/* we count on this going ok */
 		init();
@@ -174,6 +174,7 @@ static char * envp_rc[] = { "HOME=/", NULL };
 
 static char * argv[] = { "-/bin/sh",NULL };
 static char * envp[] = { "HOME=/usr/root", NULL };
+
 
 void init(void)
 {

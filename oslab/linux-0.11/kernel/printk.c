@@ -31,6 +31,7 @@
 #define USED 100
 
 static char buf[1024];
+static char *swap_buf;
 
 extern int vsprintf(char * buf, const char * fmt, va_list args);
 
@@ -110,14 +111,14 @@ int f_write_swap(int page)
 	int 	count = 4096;//固定一次写一页
 	struct 	file * file;
 	struct 	m_inode * inode;
-	char *	buf;
+
 	off_t	pos;//文件当前读写指针位置
 	int 	block,c;
 	struct 	buffer_head * bh;
 	char * 	p;
 	int 	i = 0;
 	
-        buf = (page << 12) + LOW_MEM/*page页号对应的物理地址(linux0.11内核直接使用物理地址) page=((addr) - LOW_MEM)>>12*/
+        //buf = (page << 12) + LOW_MEM;/*page页号对应的物理地址(linux0.11内核直接使用物理地址) page=((addr) - LOW_MEM)>>12*/
 	
 	if(!(file = task[0]->filp[7])) //从进程0的文件描述符表中得到文件句柄
 		return 0;
@@ -159,7 +160,7 @@ int f_write_swap(int page)
 		}
 		i += c;
 		while (c-->0)
-			*(p++) = get_fs_byte(buf++);
+			*(p++) = get_fs_byte(swap_buf++);
 		brelse(bh);
 	}
 	inode->i_mtime = CURRENT_TIME;
@@ -176,9 +177,9 @@ int f_read_swap(int page)
         int 	count = 4096;//固定一次读一页
         struct 	file * file;
         struct 	m_inode * inode;
-	char *	buf;
+	//char *	swap_buf;
 
-        buf = (page << 12) + LOW_MEM/*page页号对应的物理地址(linux0.11内核直接使用物理地址) page=((addr) - LOW_MEM)>>12*/
+        //buf = (page << 12) + LOW_MEM;/*page页号对应的物理地址(linux0.11内核直接使用物理地址) page=((addr) - LOW_MEM)>>12*/
 
         if(!(file=task[0]->filp[7])) //从进程0的文件描述符表中得到文件句柄
                 return 0;
@@ -217,11 +218,11 @@ int f_read_swap(int page)
 		if (bh) {
 			char * p = nr + bh->b_data;
 			while (chars-->0)
-				put_fs_byte(*(p++),buf++);
+				put_fs_byte(*(p++),swap_buf++);
 			brelse(bh);
 		} else {
 			while (chars-->0)
-				put_fs_byte(0,buf++);
+				put_fs_byte(0,swap_buf++);
 		}
 	}
 	inode->i_atime = CURRENT_TIME;

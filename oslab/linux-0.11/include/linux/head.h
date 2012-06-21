@@ -14,7 +14,7 @@ typedef struct swap_info{
 typedef struct swap_node {
 	unsigned long page; //logical address
 	unsigned long frame; //physical address
-	struct swap_info info;
+	int valid;
 	struct swap_node *next;	
 }swap_node;
 //add by renq
