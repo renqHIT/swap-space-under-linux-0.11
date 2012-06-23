@@ -30,12 +30,6 @@
 
 volatile void do_exit(long code);
 
-static inline volatile void oom(void)
-{
-	printk("out of memory\n\r");
-	do_exit(SIGSEGV);
-}
-
 #define invalidate() \
 __asm__("movl %%eax,%%cr3"::"a" (0))
 
@@ -49,12 +43,12 @@ __asm__("movl %%eax,%%cr3"::"a" (0))
 #define CODE_SPACE(addr) ((((addr)+4095)&~4095) < \
 current->start_code + current->end_code)
 
-static long HIGH_MEMORY = 0;
+static unsigned long HIGH_MEMORY = 0;
 
 #define copy_page(from,to) \
 __asm__("cld ; rep ; movsl"::"S" (from),"D" (to),"c" (1024))
 
-static unsigned char mem_map [ PAGING_PAGES ] = {0,};
+unsigned char mem_map [ PAGING_PAGES ] = {0,};
 
 /*
  * Get physical address of first (actually last :-) free page, and mark it
@@ -377,11 +371,22 @@ void do_no_page(unsigned long error_code,unsigned long address)
 
 	address &= 0xfffff000;
 	tmp = address - current->start_code;//tmp是逻辑地址
-	page = (tmp - LOW_MEM) >> 12;
-	//add by renq
-	//从swap文件(或者是swap_list?)中找address处是否曾被换出，如果所需要的页面在交换文件中，换入
-	//
 	
+	page = *(unsigned long *)((address >> 20) & 0xffc);
+	if(page & 1){
+		page &= 0xfffff000;
+		page += (address >> 10) & 0xffc;
+		tmp = *(unsigned long *)page;
+		if(tmp && !(1 & tmp)){
+			swap_in((unsigned long *)page);
+			return ;
+		}
+	}
+
+	
+	/*add by renq
+	//从swap文件(或者是swap_list?)中找address处是否曾被换出，如果所需要的页面在交换文件中，换入
+
 	while(swap_list->page != tmp)//没找到曾经换出该页
 	{
 		if(swap_list == NULL)
@@ -394,16 +399,16 @@ void do_no_page(unsigned long error_code,unsigned long address)
 			fprintk(3,"Swap in:Page = %ld, Frame = %ld",page,frame); //向log文件写入
 			f_read_swap(frame);// 读swap，写入缺页进程内存,所读一页内容写至char * buf中
 			//printk("content : %s",)
-			
+
 			new_page = get_free_page();
 
 			swap_pos = task[0]->filp[7]->f_pos;			
-					
+
 			swap_list->valid = 0;//置为无效
 			swap_list = head;//为了下次依然从头开始查找	
 			if (put_page(new_page,address))//建立映射
 				break;
-			return ；
+			return ;
 		}
 		if(swap_list->next = NULL)
 			break;
@@ -411,7 +416,7 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	}
 	//add by renq
 	//fprintk(3, "Swap in:%ld\tLiner Address:%ld\tPysical Address:%ld\n", current->pid,address,0);//这里物理内存地址需要修改
-	//end add by renq
+	end add by renq*/
 	if (!current->executable || tmp >= current->end_data) {
 		get_empty_page(address);
 
@@ -450,6 +455,7 @@ void mem_init(long start_mem, long end_mem)
 	end_mem >>= 12;
 	while (end_mem-->0)
 		mem_map[i++]=0;
+	
 }
 
 void calc_mem(void)
@@ -460,6 +466,10 @@ void calc_mem(void)
 	for(i=0 ; i<PAGING_PAGES ; i++)
 		if (!mem_map[i]) free++;
 	printk("%d pages free (of %d)\n\r",free,PAGING_PAGES);
+
+	//if(free <= 1024)//暂时定为，系统可用内存小于1M时，内核开始换出
+	//	swap_out();
+
 	for(i=2 ; i<1024 ; i++) {
 		if (1&pg_dir[i]) {
 			pg_tbl=(long *) (0xfffff000 & pg_dir[i]);
@@ -470,3 +480,18 @@ void calc_mem(void)
 		}
 	}
 }
+
+/*
+static int swap_out()
+{
+	//线性搜索每个进程的页表，并尝试换出页面:可以换出的页面包括，用户空间进程的代码段和数据段
+	int	counter;//计数器counter为进程个数，这样只会扫描进程链表一次 
+	int	nr_pages;//换出页面个数
+	
+	do{
+			
+		if(!nr_pages)
+			return 1;	
+	}while(--counter >= 0) ;
+}
+*/

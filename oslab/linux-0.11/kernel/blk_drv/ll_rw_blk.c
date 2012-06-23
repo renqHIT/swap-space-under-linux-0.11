@@ -39,6 +39,8 @@ struct blk_dev_struct blk_dev[NR_BLK_DEV] = {
 	{ NULL, NULL }		/* dev lp */
 };
 
+int * blk_size[NR_BLK_DEV] = {NULL, NULL, };
+
 static inline void lock_buffer(struct buffer_head * bh)
 {
 	cli();
@@ -163,3 +165,41 @@ void blk_dev_init(void)
 		request[i].next = NULL;
 	}
 }
+
+void ll_rw_page(int rw, int dev, int page, char * buffer)
+{
+	struct request * req;
+	unsigned int major = MAJOR(dev);
+
+	if (major >= NR_BLK_DEV || !(blk_dev[major].request_fn)) {
+		printk("Trying to read nonexistent block-device\n\r");
+		return;
+	}
+	if (rw!=READ && rw!=WRITE)
+		panic("Bad block dev command, must be R/W");
+repeat:
+	req = request+NR_REQUEST;
+	while (--req >= request)
+		if (req->dev<0)
+			break;
+	if (req < request) {
+		sleep_on(&wait_for_request);
+		goto repeat;
+	}
+/* fill up the request-info, and add it to the queue */
+	req->dev = dev;
+	req->cmd = rw;
+	req->errors = 0;
+	req->sector = page<<3;
+	req->nr_sectors = 8;
+
+	req->buffer = buffer;
+	req->waiting = current;
+	req->bh = NULL;
+	req->next = NULL;
+	current->state = TASK_UNINTERRUPTIBLE;
+
+	add_request(major+blk_dev,req);
+	schedule();
+}
+

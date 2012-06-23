@@ -16,7 +16,7 @@ CPP	=gcc-3.4 -E -nostdinc -I../include
 	$(CC) $(CFLAGS) \
 	-S -o $*.s $<
 
-OBJS	= memory.o page.o
+OBJS	= memory.o page.o swap.o
 
 all: mm.o
 
@@ -37,3 +37,5 @@ memory.o: memory.c ../include/signal.h ../include/sys/types.h \
   ../include/asm/system.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/linux/mm.h \
   ../include/linux/kernel.h
+swap.o: swap.c ../include/string.h ../include/linux/mm.h \
+  ../include/linux/sched.h/ ../include/linux/head.h ../include/linux/kernel.h
