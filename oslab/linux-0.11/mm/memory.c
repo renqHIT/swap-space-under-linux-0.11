@@ -223,7 +223,7 @@ void un_wp_page(unsigned long * table_entry)
 		return;
 	}
 	if (!(new_page=get_free_page()))
-		oom();
+		//oom();
 	if (old_page >= LOW_MEM)
 		mem_map[MAP_NR(old_page)]--;
 	*table_entry = new_page | 7;
@@ -271,7 +271,7 @@ void get_empty_page(unsigned long address)
 
 	if (!(tmp=get_free_page()) || !put_page(tmp,address)) {
 		free_page(tmp);		/* 0 is ok - ignored */
-		oom();
+		//oom();
 	}
 }
 
@@ -311,8 +311,8 @@ static int try_to_share(unsigned long address, struct task_struct * p)
 	if (!(to & 1)) {
 		if ((to = get_free_page()))
 			*(unsigned long *) to_page = to | 7;
-		else
-			oom();
+		//else
+			//oom();
 	}
 	to &= 0xfffff000;
 	to_page = to + ((address>>10) & 0xffc);
@@ -425,7 +425,7 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	if (share_page(tmp))
 		return;
 	if (!(page = get_free_page()))
-		oom();
+		//oom();
 /* remember that 1 block is used for header */
 	block = 1 + tmp/BLOCK_SIZE;
 	for (i=0 ; i<4 ; block++,i++)
@@ -440,7 +440,7 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	if (put_page(page,address))
 		return;
 	free_page(page);
-	oom();
+	//oom();
 }
 
 void mem_init(long start_mem, long end_mem)
@@ -458,27 +458,51 @@ void mem_init(long start_mem, long end_mem)
 	
 }
 
-void calc_mem(void)
+void show_mem(void)
 {
-	int i,j,k,free=0;
-	long * pg_tbl;
-
-	for(i=0 ; i<PAGING_PAGES ; i++)
-		if (!mem_map[i]) free++;
-	printk("%d pages free (of %d)\n\r",free,PAGING_PAGES);
-
-	//if(free <= 1024)//暂时定为，系统可用内存小于1M时，内核开始换出
-	//	swap_out();
-
-	for(i=2 ; i<1024 ; i++) {
-		if (1&pg_dir[i]) {
-			pg_tbl=(long *) (0xfffff000 & pg_dir[i]);
-			for(j=k=0 ; j<1024 ; j++)
-				if (pg_tbl[j]&1)
-					k++;
-			printk("Pg-dir[%d] uses %d pages\n",i,k);
-		}
-	}
+         int i,j,k,free=0,total=0;
+         int shared=0;
+         unsigned long * pg_tbl;
+ 
+         printk("Mem-info:\n\r");
+         for(i=0 ; i<PAGING_PAGES ; i++) {
+                 if (mem_map[i] == USED)
+                         continue;
+                 total++;
+                 if (!mem_map[i])
+                         free++;
+                 else
+                         shared += mem_map[i]-1;
+         }
+         printk("%d free pages of %d\n\r",free,total);
+         printk("%d pages shared\n\r",shared);
+         k = 0;
+         for(i=4 ; i<1024 ;) {
+                 if (1&pg_dir[i]) {
+                         if (pg_dir[i]>HIGH_MEMORY) {
+                                 printk("page directory[%d]: %08X\n\r",
+                                         i,pg_dir[i]);
+                                 continue;
+                         }
+                         if (pg_dir[i]>LOW_MEM)
+                                 free++,k++;
+                         pg_tbl=(unsigned long *) (0xfffff000 & pg_dir[i]);
+                         for(j=0 ; j<1024 ; j++)
+                                 if ((pg_tbl[j]&1) && pg_tbl[j]>LOW_MEM)
+                                         if (pg_tbl[j]>HIGH_MEMORY)
+                                                 printk("page_dir[%d][%d]: %08X\n\r",
+                                                         i,j, pg_tbl[j]);
+                                         else
+                                                 k++,free++;
+                 }
+                 i++;
+                 if (!(i&15) && k) {
+                         k++,free++;     /* one page/process for task_struct */
+                         printk("Process %d: %d pages\n\r",(i>>4)-1,k);
+                         k = 0;
+                 }
+         }
+         printk("Memory found: %d (%d)\n\r",free-shared,total);
 }
 
 /*

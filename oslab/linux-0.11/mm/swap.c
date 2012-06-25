@@ -24,10 +24,6 @@ bitop(clrbit,"r")
 static char * swap_bitmap = NULL;
 int SWAP_DEV = 0;
 
-/*
- * We never page the pages in task[0] - kernel memory.
- * We page all other pages.
- */
 #define FIRST_VM_PAGE (TASK_SIZE>>12)
 #define LAST_VM_PAGE (1024*1024)
 #define VM_PAGES (LAST_VM_PAGE - FIRST_VM_PAGE)
@@ -74,7 +70,7 @@ void swap_in(unsigned long *table_ptr)
 		return;
 	}
 	if (!(page = get_free_page()))
-		oom();						//out of memory,内存不足
+		//oom();						//out of memory,内存不足
 	read_swap_page(swap_nr, (char *) page);
 	if (setbit(swap_bitmap,swap_nr))
 		printk("swapping in multiply from same page\n\r");
@@ -109,11 +105,6 @@ int try_to_swap_out(unsigned long * table_ptr)
 	return 1;
 }
 
-/*
- * Ok, this has a rather intricate logic - the idea is to make good
- * and fast machine code. If we didn't worry about that, things would
- * be easier.
- */
 int swap_out(void)
 {
 	static int dir_entry = FIRST_VM_PAGE>>10;

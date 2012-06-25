@@ -137,14 +137,8 @@ void main(void)		/* This really IS void, no error here. */
 	floppy_init();
 	sti();
 	move_to_user_mode();
-	//add by renq
-	setup((void *) &drive_info);
-	(void) open("/dev/tty0",O_RDWR,0);	//建立文件描述符0和/dev/tty0的关联
-	(void) dup(0);		//文件描述符1也和/dev/tty0关联
-	(void) dup(0);		//文件描述符2也和/dev/tty0关联
-	tmp_fd = open("/var/swap.log",O_CREAT|O_TRUNC|O_WRONLY,0666);//swap.log文件描述符是几？ 3
-	printf("swap.log open success, fd = %d\n",tmp_fd);
-	//end add by renq
+
+	printk("before fork init\n");
 	if (!fork()) {		/* we count on this going ok */
 		init();
 	}
@@ -180,19 +174,21 @@ void init(void)
 {
 	int pid,i;
 	int swap_fd;// add by renq
-
-	/*
+	
+	printf("before setup drive info\n");
 	setup((void *) &drive_info);
 	(void) open("/dev/tty0",O_RDWR,0);
 	(void) dup(0);
 	(void) dup(0);
+	printf("before open /var/swap.log\n");
+	swap_fd = open("/var/swap.log",O_CREAT|O_TRUNC|O_WRONLY,0666);//swap.log文件描述符是几？ 3
+	printf("swap.log open success, fd = %d\n",swap_fd);
 	printf("%d buffers = %d bytes buffer space\n\r",NR_BUFFERS,
 		NR_BUFFERS*BLOCK_SIZE);
-	*/
+	
 	printf("Free mem: %d bytes\n\r",memory_end-main_memory_start);
 	/*add by renq*/
-	swap_fd = open("/var/swap",O_CREAT|O_TRUNC,0666);//swap的文件描述符是几？ 貌似是7
-	printf("Open swap file success, fd = %d\n",swap_fd);
+	//swap_fd = open("/var/swap",O_CREAT|O_TRUNC,0666);//swap的文件描述符是几？ 貌似是7
 	/*end add*/
 	if (!(pid=fork())) {
 		close(0);

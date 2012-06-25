@@ -3,9 +3,6 @@
 
 #define PAGE_SIZE 4096
 
-#include <linux/kernel.h>
-#include <signal.h>
-
 extern int SWAP_DEV;
 
 #define read_swap_page(nr,buffer) ll_rw_page(READ,SWAP_DEV,(nr),(buffer));
@@ -16,11 +13,6 @@ extern unsigned long put_dirty_page(unsigned long page,unsigned long address);
 extern void free_page(unsigned long addr);
 void swap_free(int page_nr);
 void swap_in(unsigned long *table_ptr);
-
-extern inline volatile void oom(void)
-{
-	printk("out of memory\n\r");
-}
 
 #define invalidate() \
 __asm__("movl %%eax,%%cr3"::"a" (0))

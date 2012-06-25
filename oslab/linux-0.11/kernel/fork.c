@@ -43,7 +43,7 @@ int copy_mem(int nr,struct task_struct * p)
 
 	code_limit=get_limit(0x0f);
 	data_limit=get_limit(0x17);
-	printk("nr = %d, code_limit = %ld, data_limit = %ld\n",nr,code_limit,data_limit);
+	
 	old_code_base = get_base(current->ldt[1]);
 	old_data_base = get_base(current->ldt[2]);
 	if (old_data_base != old_code_base)
