@@ -154,6 +154,8 @@ int sys_setup(void * BIOS)
 	if (NR_HD)
 		printk("Partition table%s ok.\n\r",(NR_HD>1)?"s":"");
 	rd_load();
+	//printk("before init swapping\n");//add by renq
+	init_swapping();//add by renq
 	mount_root();
 	return (0);
 }

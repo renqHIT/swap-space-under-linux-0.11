@@ -54,6 +54,8 @@ unsigned char mem_map [ PAGING_PAGES ] = {0,};
  * Get physical address of first (actually last :-) free page, and mark it
  * used. If no free pages left, return 0.
  */
+
+/*
 unsigned long get_free_page(void)
 {
 register unsigned long __res asm("ax");
@@ -75,6 +77,9 @@ __asm__("std ; repne ; scasb\n\t"
 	);
 return __res;
 }
+*/
+
+
 
 /*
  * Free a page of memory at physical address 'addr'. Used by
@@ -361,17 +366,34 @@ void do_no_page(unsigned long error_code,unsigned long address)
 {
 	int nr[4];
 	unsigned long tmp;
-	unsigned long page,frame;
-	unsigned long new_page;
+	unsigned long page;
+	//unsigned long new_page;
 	int block,i;
 
-	off_t swap_pos;//swap文件当前指针
-	struct swap_node * swap_list = NULL;
-	struct swap_node * head = swap_list;
+	//printk("now in do_no_page\n");
+	//off_t swap_pos;//swap文件当前指针
+	//struct swap_node * swap_list = NULL;
+	//struct swap_node * head = swap_list;
 
 	address &= 0xfffff000;
 	tmp = address - current->start_code;//tmp是逻辑地址
 	
+	if (!current->executable || tmp >= current->end_data) {
+		get_empty_page(address);
+		return;
+	}
+	if (share_page(tmp))
+		return;
+	if (!(page = get_free_page()))
+		//oom();
+
+/*
+	if(address < TASK_SIZE)
+		printk("\n\rBAD!KERNEL PAGE MISSING\n\r");
+	if(address - current->start_code > TASK_SIZE){
+		printk("error in do_no_page\n");
+	}  	
+
 	page = *(unsigned long *)((address >> 20) & 0xffc);
 	if(page & 1){
 		page &= 0xfffff000;
@@ -382,50 +404,8 @@ void do_no_page(unsigned long error_code,unsigned long address)
 			return ;
 		}
 	}
+*/
 
-	
-	/*add by renq
-	//从swap文件(或者是swap_list?)中找address处是否曾被换出，如果所需要的页面在交换文件中，换入
-
-	while(swap_list->page != tmp)//没找到曾经换出该页
-	{
-		if(swap_list == NULL)
-			break;
-		if(swap_list->page == tmp && swap_list->valid == 1)//所需的页在swap中而且有效
-		{
-			//
-			frame = swap_list->frame;//在swap中的位置位frame
-			printk("page : %ld ,frame : %ld\n",page,frame);//调试用，向终端显示
-			fprintk(3,"Swap in:Page = %ld, Frame = %ld",page,frame); //向log文件写入
-			f_read_swap(frame);// 读swap，写入缺页进程内存,所读一页内容写至char * buf中
-			//printk("content : %s",)
-
-			new_page = get_free_page();
-
-			swap_pos = task[0]->filp[7]->f_pos;			
-
-			swap_list->valid = 0;//置为无效
-			swap_list = head;//为了下次依然从头开始查找	
-			if (put_page(new_page,address))//建立映射
-				break;
-			return ;
-		}
-		if(swap_list->next = NULL)
-			break;
-		swap_list = swap_list->next;
-	}
-	//add by renq
-	//fprintk(3, "Swap in:%ld\tLiner Address:%ld\tPysical Address:%ld\n", current->pid,address,0);//这里物理内存地址需要修改
-	end add by renq*/
-	if (!current->executable || tmp >= current->end_data) {
-		get_empty_page(address);
-
-		return;
-	}
-	if (share_page(tmp))
-		return;
-	if (!(page = get_free_page()))
-		//oom();
 /* remember that 1 block is used for header */
 	block = 1 + tmp/BLOCK_SIZE;
 	for (i=0 ; i<4 ; block++,i++)

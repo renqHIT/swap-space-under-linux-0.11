@@ -21,8 +21,8 @@ bitop(bit,"")
 bitop(setbit,"s")
 bitop(clrbit,"r")
 
-static char * swap_bitmap = NULL;
-int SWAP_DEV = 0;
+static char * swap_bitmap = NULL;		//严格地说，是bytemap而不是bitmap
+int SWAP_DEV = 0;				//交换设备号
 
 #define FIRST_VM_PAGE (TASK_SIZE>>12)
 #define LAST_VM_PAGE (1024*1024)
@@ -34,7 +34,7 @@ static int get_swap_page(void)
 
 	if (!swap_bitmap)
 		return 0;
-	for (nr = 1; nr < 32768 ; nr++)
+	for (nr = 1; nr < 32768 ; nr++)		//一共32768个页供交换
 		if (clrbit(swap_bitmap,nr))
 			return nr;
 	return 0;
@@ -64,14 +64,18 @@ void swap_in(unsigned long *table_ptr)
 		printk("trying to swap in present page\n\r");
 		return;
 	}
-	swap_nr = *table_ptr >> 1;
+	swap_nr = *table_ptr >> 1;				//页号除以2
 	if (!swap_nr) {
 		printk("No swap page in swap_in\n\r");
 		return;
 	}
 	if (!(page = get_free_page()))
 		//oom();						//out of memory,内存不足
+	//#define read_swap_page(nr,buffer) ll_rw_page(READ,SWAP_DEV,(nr),(buffer));
+	//#define write_swap_page(nr,buffer) ll_rw_page(WRITE,SWAP_DEV,(nr),(buffer));
+	//void ll_rw_page(int rw, int dev, int page, char * buffer) 读写一页
 	read_swap_page(swap_nr, (char *) page);
+
 	if (setbit(swap_bitmap,swap_nr))
 		printk("swapping in multiply from same page\n\r");
 	*table_ptr = page | (PAGE_DIRTY | 7);
@@ -132,10 +136,12 @@ int swap_out(void)
 				dir_entry = FIRST_VM_PAGE>>10;
 			pg_table = pg_dir[dir_entry];
 			if (!(pg_table&1))
+			{
 				if ((counter -= 1024) > 0)
 					goto repeat;
 				else
 					break;
+			}
 			pg_table &= 0xfffff000;
 		}
 		if (try_to_swap_out(page_entry + (unsigned long *) pg_table))
@@ -143,6 +149,65 @@ int swap_out(void)
 	}
 	printk("Out of swap-memory\n\r");
 	return 0;
+}
+
+/*
+unsigned long get_free_page(void)
+{
+register unsigned long __res asm("ax");
+
+	//printk("now in get_free_page\n");	
+repeat:
+        __asm__("std ; repne ; scasb\n\t"
+                "jne 1f\n\t"
+                "movb $1,1(%%edi)\n\t"
+                "sall $12,%%ecx\n\t"
+                "addl %2,%%ecx\n\t"
+                "movl %%ecx,%%edx\n\t"
+                "movl $1024,%%ecx\n\t"
+                "leal 4092(%%edx),%%edi\n\t"
+                "rep ; stosl\n\t"
+                "movl %%edx,%%eax\n"
+                "1:"
+                :"=a" (__res)
+                :"0" (0),"i" (LOW_MEM),"c" (PAGING_PAGES),
+                "D" (mem_map+PAGING_PAGES-1)
+                :"di","cx","dx");
+        if (__res >= HIGH_MEMORY)
+                goto repeat;
+        if (!__res && swap_out())
+                goto repeat;
+       return __res;
+}
+*/
+
+
+unsigned long get_free_page(void)
+{
+register unsigned long __res asm("ax");
+
+repeat:
+	__asm__("std ; repne ; scasb\n\t"
+		"jne 1f\n\t"
+		"movb $1,1(%%edi)\n\t"
+		"sall $12,%%ecx\n\t"
+		"addl %2,%%ecx\n\t"
+		"movl %%ecx,%%edx\n\t"
+		"movl $1024,%%ecx\n\t"
+		"leal 4092(%%edx),%%edi\n\t"
+		"rep ; stosl\n\t"
+		"movl %%edx,%%eax\n"
+		"1:"
+		:"=a" (__res)
+		:"0" (0),"i" (LOW_MEM),"c" (PAGING_PAGES),
+		"D" (mem_map+PAGING_PAGES-1)
+		);
+	if(__res >= (16*1024*1024))//HIGH_MEMORY 暂时采用常量。这是请求的页高于物理内存大小的情况
+		goto repeat;
+	if(!__res && swap_out())//没有页，需要换出一部分，再重新申请内存
+		goto repeat;
+	
+	return __res;
 }
 
 

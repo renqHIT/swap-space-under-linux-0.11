@@ -34,12 +34,12 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe 
-00000000000i[MEM0 ] allocated memory at 0xb63fa008. after alignment, vector=0xb63fb000
+00000000000i[MEM0 ] allocated memory at 0xb62c1008. after alignment, vector=0xb62c2000
 00000000000i[MEM0 ] 16.00MB
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('./bochs/BIOS-bochs-latest')
 00000000000i[MEM0 ] rom at 0xc0000/39424 ('./bochs/vgabios.bin')
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Mon Jun 25 20:47:37 2012 (time0=1340628457)
+00000000000i[CMOS ] Setting initial clock to: Tue Jun 26 22:20:21 2012 (time0=1340720421)
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[DMA  ] channel 2 used by Floppy Drive
 00000000000i[FDD  ] fd0: './linux-0.11/Image' ro=0, h=2,t=80,spt=18
@@ -98,7 +98,8 @@
 00001200000i[XGUI ] charmap update. Font Height is 16
 00004768797i[BIOS ] IDE time out
 00004967660i[BIOS ] Booting from 0000:7c00
-00016379228i[FDD  ] partial read() on floppy image returns 36/512
+00016334273i[FDD  ] partial read() on floppy image returns 100/512
+00016379228i[FDD  ] read() on floppy image returns 0
 00016424183i[FDD  ] read() on floppy image returns 0
 00016469138i[FDD  ] read() on floppy image returns 0
 00016514093i[FDD  ] read() on floppy image returns 0
@@ -234,231 +235,372 @@
 00022368213i[FDD  ] read() on floppy image returns 0
 00022413168i[FDD  ] read() on floppy image returns 0
 00022463638i[BIOS ] int13_harddisk: function 15, unmapped device for ELDL=81
-00022917813e[CPU  ] write_virtual_checks(): write beyond limit, r/w
-00022958444i[CPU  ] CPU is in protected mode (active)
-00022958444i[CPU  ] CS.d_b = 32 bit
-00022958444i[CPU  ] SS.d_b = 32 bit
-00022958444i[CPU  ] | EAX=00000000  EBX=00001000  ECX=000a0000  EDX=00000000
-00022958444i[CPU  ] | ESP=0001b00c  EBP=00000000  ESI=00002000  EDI=ffffffff
-00022958444i[CPU  ] | IOPL=0 id vip vif ac vm RF nt of df IF tf SF zf AF pf CF
-00022958444i[CPU  ] | SEG selector     base    limit G D
-00022958444i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00022958444i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 00000fff 1 1
-00022958444i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00022958444i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00022958444i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00022958444i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00022958444i[CPU  ] |  GS:0017( 0002| 1|  3) 00000000 0000009f 1 1
-00022958444i[CPU  ] | EIP=0000a9e4 (0000a9e4)
-00022958444i[CPU  ] | CR0=0x80000013 CR1=0 CR2=0x0001affc
-00022958444i[CPU  ] | CR3=0x00000000 CR4=0x00000000
-00022958444i[CPU  ] >> xchg dword ptr ss:[esp], eax : 870424
-00022958444e[CPU  ] exception(): 3rd (14) exception with no resolution, shutdown status is 00h, resetting
-00022958444i[SYS  ] bx_pc_system_c::Reset(SOFTWARE) called
-00022958444i[CPU  ] cpu software reset
-00022961890i[BIOS ] $Revision: 1.194 $ $Date: 2007/12/23 19:46:27 $
-00023276075i[KBD  ] reset-disable command received
-00023294819i[BIOS ] Starting rombios32
-00023295515i[BIOS ] ram_size=0x00f00000
-00023296029i[BIOS ] Found 1 cpu(s)
-00023520527i[VBIOS] VGABios $Id: vgabios.c,v 1.66 2006/07/10 07:47:51 vruppert Exp $
-00023520598i[VGA  ] VBE known Display Interface b0c0
-00023520630i[VGA  ] VBE known Display Interface b0c4
-00023523555i[VBIOS] VBE Bios $Id: vbe.c,v 1.58 2006/08/19 09:39:43 vruppert Exp $
-00023847019i[BIOS ] ata0-0: PCHS=204/16/38 translation=none LCHS=204/16/38
-00024000000i[XGUI ] charmap update. Font Height is 16
-00027727204i[BIOS ] IDE time out
-00027750936i[FDD  ] controller reset in software
-00027927134i[BIOS ] Booting from 0000:7c00
-00039338702i[FDD  ] partial read() on floppy image returns 36/512
-00039383657i[FDD  ] read() on floppy image returns 0
-00039428612i[FDD  ] read() on floppy image returns 0
-00039473567i[FDD  ] read() on floppy image returns 0
-00039518522i[FDD  ] read() on floppy image returns 0
-00039563477i[FDD  ] read() on floppy image returns 0
-00039608432i[FDD  ] read() on floppy image returns 0
-00039654639i[FDD  ] read() on floppy image returns 0
-00039699594i[FDD  ] read() on floppy image returns 0
-00039744549i[FDD  ] read() on floppy image returns 0
-00039789504i[FDD  ] read() on floppy image returns 0
-00039834459i[FDD  ] read() on floppy image returns 0
-00039879414i[FDD  ] read() on floppy image returns 0
-00039924369i[FDD  ] read() on floppy image returns 0
-00039969324i[FDD  ] read() on floppy image returns 0
-00040014279i[FDD  ] read() on floppy image returns 0
-00040060467i[FDD  ] read() on floppy image returns 0
-00040105422i[FDD  ] read() on floppy image returns 0
-00040150377i[FDD  ] read() on floppy image returns 0
-00040195332i[FDD  ] read() on floppy image returns 0
-00040240287i[FDD  ] read() on floppy image returns 0
-00040285242i[FDD  ] read() on floppy image returns 0
-00040330197i[FDD  ] read() on floppy image returns 0
-00040375152i[FDD  ] read() on floppy image returns 0
-00040420107i[FDD  ] read() on floppy image returns 0
-00040465062i[FDD  ] read() on floppy image returns 0
-00040510017i[FDD  ] read() on floppy image returns 0
-00040554972i[FDD  ] read() on floppy image returns 0
-00040599927i[FDD  ] read() on floppy image returns 0
-00040644882i[FDD  ] read() on floppy image returns 0
-00040689837i[FDD  ] read() on floppy image returns 0
-00040734792i[FDD  ] read() on floppy image returns 0
-00040779747i[FDD  ] read() on floppy image returns 0
-00040824702i[FDD  ] read() on floppy image returns 0
-00040870898i[FDD  ] read() on floppy image returns 0
-00040915853i[FDD  ] read() on floppy image returns 0
-00040960808i[FDD  ] read() on floppy image returns 0
-00041005763i[FDD  ] read() on floppy image returns 0
-00041050718i[FDD  ] read() on floppy image returns 0
-00041095673i[FDD  ] read() on floppy image returns 0
-00041140628i[FDD  ] read() on floppy image returns 0
-00041185583i[FDD  ] read() on floppy image returns 0
-00041230538i[FDD  ] read() on floppy image returns 0
-00041275493i[FDD  ] read() on floppy image returns 0
-00041320448i[FDD  ] read() on floppy image returns 0
-00041365403i[FDD  ] read() on floppy image returns 0
-00041410358i[FDD  ] read() on floppy image returns 0
-00041455313i[FDD  ] read() on floppy image returns 0
-00041500268i[FDD  ] read() on floppy image returns 0
-00041545223i[FDD  ] read() on floppy image returns 0
-00041590178i[FDD  ] read() on floppy image returns 0
-00041635133i[FDD  ] read() on floppy image returns 0
-00041681328i[FDD  ] read() on floppy image returns 0
-00041726283i[FDD  ] read() on floppy image returns 0
-00041771238i[FDD  ] read() on floppy image returns 0
-00041816193i[FDD  ] read() on floppy image returns 0
-00041861148i[FDD  ] read() on floppy image returns 0
-00041906103i[FDD  ] read() on floppy image returns 0
-00041951058i[FDD  ] read() on floppy image returns 0
-00041996013i[FDD  ] read() on floppy image returns 0
-00042040968i[FDD  ] read() on floppy image returns 0
-00042085923i[FDD  ] read() on floppy image returns 0
-00042130878i[FDD  ] read() on floppy image returns 0
-00042175833i[FDD  ] read() on floppy image returns 0
-00042220788i[FDD  ] read() on floppy image returns 0
-00042265743i[FDD  ] read() on floppy image returns 0
-00042310698i[FDD  ] read() on floppy image returns 0
-00042355653i[FDD  ] read() on floppy image returns 0
-00042400608i[FDD  ] read() on floppy image returns 0
-00042445563i[FDD  ] read() on floppy image returns 0
-00042491778i[FDD  ] read() on floppy image returns 0
-00042536733i[FDD  ] read() on floppy image returns 0
-00042581688i[FDD  ] read() on floppy image returns 0
-00042626643i[FDD  ] read() on floppy image returns 0
-00042671598i[FDD  ] read() on floppy image returns 0
-00042716553i[FDD  ] read() on floppy image returns 0
-00042761508i[FDD  ] read() on floppy image returns 0
-00042806463i[FDD  ] read() on floppy image returns 0
-00042851418i[FDD  ] read() on floppy image returns 0
-00042896373i[FDD  ] read() on floppy image returns 0
-00042941328i[FDD  ] read() on floppy image returns 0
-00042986283i[FDD  ] read() on floppy image returns 0
-00043031238i[FDD  ] read() on floppy image returns 0
-00043076193i[FDD  ] read() on floppy image returns 0
-00043121148i[FDD  ] read() on floppy image returns 0
-00043166103i[FDD  ] read() on floppy image returns 0
-00043211058i[FDD  ] read() on floppy image returns 0
-00043256013i[FDD  ] read() on floppy image returns 0
-00043302208i[FDD  ] read() on floppy image returns 0
-00043347163i[FDD  ] read() on floppy image returns 0
-00043392118i[FDD  ] read() on floppy image returns 0
-00043437073i[FDD  ] read() on floppy image returns 0
-00043482028i[FDD  ] read() on floppy image returns 0
-00043526983i[FDD  ] read() on floppy image returns 0
-00043571938i[FDD  ] read() on floppy image returns 0
-00043616893i[FDD  ] read() on floppy image returns 0
-00043661848i[FDD  ] read() on floppy image returns 0
-00043706803i[FDD  ] read() on floppy image returns 0
-00043751758i[FDD  ] read() on floppy image returns 0
-00043796713i[FDD  ] read() on floppy image returns 0
-00043841668i[FDD  ] read() on floppy image returns 0
-00043886623i[FDD  ] read() on floppy image returns 0
-00043931578i[FDD  ] read() on floppy image returns 0
-00043976533i[FDD  ] read() on floppy image returns 0
-00044021488i[FDD  ] read() on floppy image returns 0
-00044066443i[FDD  ] read() on floppy image returns 0
-00044112639i[FDD  ] read() on floppy image returns 0
-00044157594i[FDD  ] read() on floppy image returns 0
-00044202549i[FDD  ] read() on floppy image returns 0
-00044247504i[FDD  ] read() on floppy image returns 0
-00044292459i[FDD  ] read() on floppy image returns 0
-00044337414i[FDD  ] read() on floppy image returns 0
-00044382369i[FDD  ] read() on floppy image returns 0
-00044427324i[FDD  ] read() on floppy image returns 0
-00044472279i[FDD  ] read() on floppy image returns 0
-00044517234i[FDD  ] read() on floppy image returns 0
-00044562189i[FDD  ] read() on floppy image returns 0
-00044607144i[FDD  ] read() on floppy image returns 0
-00044652099i[FDD  ] read() on floppy image returns 0
-00044697054i[FDD  ] read() on floppy image returns 0
-00044742009i[FDD  ] read() on floppy image returns 0
-00044786964i[FDD  ] read() on floppy image returns 0
-00044831919i[FDD  ] read() on floppy image returns 0
-00044876874i[FDD  ] read() on floppy image returns 0
-00044923092i[FDD  ] read() on floppy image returns 0
-00044968047i[FDD  ] read() on floppy image returns 0
-00045013002i[FDD  ] read() on floppy image returns 0
-00045057957i[FDD  ] read() on floppy image returns 0
-00045102912i[FDD  ] read() on floppy image returns 0
-00045147867i[FDD  ] read() on floppy image returns 0
-00045192822i[FDD  ] read() on floppy image returns 0
-00045237777i[FDD  ] read() on floppy image returns 0
-00045282732i[FDD  ] read() on floppy image returns 0
-00045327687i[FDD  ] read() on floppy image returns 0
-00045372642i[FDD  ] read() on floppy image returns 0
-00045423112i[BIOS ] int13_harddisk: function 15, unmapped device for ELDL=81
-00045877287e[CPU  ] write_virtual_checks(): write beyond limit, r/w
-00045917918i[CPU  ] CPU is in protected mode (active)
-00045917918i[CPU  ] CS.d_b = 32 bit
-00045917918i[CPU  ] SS.d_b = 32 bit
-00045917918i[CPU  ] | EAX=00000000  EBX=00001000  ECX=000a0000  EDX=00000000
-00045917918i[CPU  ] | ESP=0001b00c  EBP=00000000  ESI=00002000  EDI=ffffffff
-00045917918i[CPU  ] | IOPL=0 id vip vif ac vm RF nt of df IF tf SF zf AF pf CF
-00045917918i[CPU  ] | SEG selector     base    limit G D
-00045917918i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00045917918i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 00000fff 1 1
-00045917918i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00045917918i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00045917918i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00045917918i[CPU  ] |  FS:0010( 0002| 0|  0) 00000000 00000fff 1 1
-00045917918i[CPU  ] |  GS:0017( 0002| 1|  3) 00000000 0000009f 1 1
-00045917918i[CPU  ] | EIP=0000a9e4 (0000a9e4)
-00045917918i[CPU  ] | CR0=0x80000013 CR1=0 CR2=0x0001affc
-00045917918i[CPU  ] | CR3=0x00000000 CR4=0x00000000
-00045917918i[CPU  ] >> xchg dword ptr ss:[esp], eax : 870424
-00045917918e[CPU  ] exception(): 3rd (14) exception with no resolution, shutdown status is 00h, resetting
-00045917918i[SYS  ] bx_pc_system_c::Reset(SOFTWARE) called
-00045917918i[CPU  ] cpu software reset
-00045921364i[BIOS ] $Revision: 1.194 $ $Date: 2007/12/23 19:46:27 $
-00046235245i[KBD  ] reset-disable command received
-00046253989i[BIOS ] Starting rombios32
-00046254685i[BIOS ] ram_size=0x00f00000
-00046255199i[BIOS ] Found 1 cpu(s)
-00046479697i[VBIOS] VGABios $Id: vgabios.c,v 1.66 2006/07/10 07:47:51 vruppert Exp $
-00046479768i[VGA  ] VBE known Display Interface b0c0
-00046479800i[VGA  ] VBE known Display Interface b0c4
-00046482725i[VBIOS] VBE Bios $Id: vbe.c,v 1.58 2006/08/19 09:39:43 vruppert Exp $
-00046800000i[XGUI ] charmap update. Font Height is 16
-00046806189i[BIOS ] ata0-0: PCHS=204/16/38 translation=none LCHS=204/16/38
-00048568000p[XGUI ] >>PANIC<< POWER button turned off.
-00048568000i[CPU  ] CPU is in real mode (active)
-00048568000i[CPU  ] CS.d_b = 16 bit
-00048568000i[CPU  ] SS.d_b = 16 bit
-00048568000i[CPU  ] | EAX=00000012  EBX=00000000  ECX=00000001  EDX=00000000
-00048568000i[CPU  ] | ESP=0000fdb8  EBP=0000fdca  ESI=ffff0000  EDI=00080003
-00048568000i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af PF CF
-00048568000i[CPU  ] | SEG selector     base    limit G D
-00048568000i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
-00048568000i[CPU  ] |  CS:f000( 0004| 0|  0) 000f0000 0000ffff 0 0
-00048568000i[CPU  ] |  DS:9fc0( 0005| 0|  0) 0009fc00 0000ffff 0 0
-00048568000i[CPU  ] |  SS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00048568000i[CPU  ] |  ES:0080( 0005| 0|  0) 00000800 0000ffff 0 0
-00048568000i[CPU  ] |  FS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00048568000i[CPU  ] |  GS:0000( 0005| 0|  0) 00000000 0000ffff 0 0
-00048568000i[CPU  ] | EIP=0000013a (0000013a)
-00048568000i[CPU  ] | CR0=0x60000010 CR1=0 CR2=0x00000000
-00048568000i[CPU  ] | CR3=0x00000000 CR4=0x00000000
-00048568000i[CPU  ] >> shr eax, 1 : 66D1E8
-00048568000i[CMOS ] Last time is 1340628469 (Mon Jun 25 20:47:49 2012)
-00048568000i[XGUI ] Exit
-00048568000i[     ] restoring default signal behavior
-00048568000i[CTRL ] quit_sim called with exit code 1
+00025056825e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00025075221e[CPU  ] read_virtual_checks(): read beyond limit
+00025381676e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00025400014e[CPU  ] read_virtual_checks(): read beyond limit
+00025792192e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00025810530e[CPU  ] read_virtual_checks(): read beyond limit
+00026201591e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00026219929e[CPU  ] read_virtual_checks(): read beyond limit
+00026611050e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00026630418e[CPU  ] read_virtual_checks(): read beyond limit
+00027021617e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00027039955e[CPU  ] read_virtual_checks(): read beyond limit
+00027431231e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00027449569e[CPU  ] read_virtual_checks(): read beyond limit
+00027842718e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00027861114e[CPU  ] read_virtual_checks(): read beyond limit
+00028253283e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00028271756e[CPU  ] read_virtual_checks(): read beyond limit
+00028663415e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00028681830e[CPU  ] read_virtual_checks(): read beyond limit
+00029074548e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00029092963e[CPU  ] read_virtual_checks(): read beyond limit
+00029484760e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00029503233e[CPU  ] read_virtual_checks(): read beyond limit
+00029896376e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00029914849e[CPU  ] read_virtual_checks(): read beyond limit
+00030306794e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00030325209e[CPU  ] read_virtual_checks(): read beyond limit
+00030717238e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00030735653e[CPU  ] read_virtual_checks(): read beyond limit
+00031128197e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00031146670e[CPU  ] read_virtual_checks(): read beyond limit
+00031539576e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00031558049e[CPU  ] read_virtual_checks(): read beyond limit
+00031951353e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00031969768e[CPU  ] read_virtual_checks(): read beyond limit
+00032359480e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00032377895e[CPU  ] read_virtual_checks(): read beyond limit
+00032773321e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00032791794e[CPU  ] read_virtual_checks(): read beyond limit
+00033184362e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00033202777e[CPU  ] read_virtual_checks(): read beyond limit
+00033595448e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00033613863e[CPU  ] read_virtual_checks(): read beyond limit
+00034006561e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00034025034e[CPU  ] read_virtual_checks(): read beyond limit
+00034418155e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00034436628e[CPU  ] read_virtual_checks(): read beyond limit
+00034831544e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00034849959e[CPU  ] read_virtual_checks(): read beyond limit
+00035242953e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00035262398e[CPU  ] read_virtual_checks(): read beyond limit
+00035655394e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00035673867e[CPU  ] read_virtual_checks(): read beyond limit
+00036066990e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00036085405e[CPU  ] read_virtual_checks(): read beyond limit
+00036478629e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00036497044e[CPU  ] read_virtual_checks(): read beyond limit
+00036890325e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00036908798e[CPU  ] read_virtual_checks(): read beyond limit
+00037303450e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00037321865e[CPU  ] read_virtual_checks(): read beyond limit
+00037715668e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00037734083e[CPU  ] read_virtual_checks(): read beyond limit
+00038128243e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00038146716e[CPU  ] read_virtual_checks(): read beyond limit
+00038540276e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00038558749e[CPU  ] read_virtual_checks(): read beyond limit
+00038952445e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00038970860e[CPU  ] read_virtual_checks(): read beyond limit
+00039365609e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00039384082e[CPU  ] read_virtual_checks(): read beyond limit
+00039777871e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00039796344e[CPU  ] read_virtual_checks(): read beyond limit
+00040191586e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00040210001e[CPU  ] read_virtual_checks(): read beyond limit
+00040603956e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00040622429e[CPU  ] read_virtual_checks(): read beyond limit
+00041016798e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00041035271e[CPU  ] read_virtual_checks(): read beyond limit
+00041430001e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00041448416e[CPU  ] read_virtual_checks(): read beyond limit
+00041842685e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00041861158e[CPU  ] read_virtual_checks(): read beyond limit
+00042255403e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00042273876e[CPU  ] read_virtual_checks(): read beyond limit
+00042669628e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00042688043e[CPU  ] read_virtual_checks(): read beyond limit
+00043082519e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00043100992e[CPU  ] read_virtual_checks(): read beyond limit
+00043495443e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00043513916e[CPU  ] read_virtual_checks(): read beyond limit
+00043909476e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00043927891e[CPU  ] read_virtual_checks(): read beyond limit
+00044322915e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00044341388e[CPU  ] read_virtual_checks(): read beyond limit
+00044736648e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00044755121e[CPU  ] read_virtual_checks(): read beyond limit
+00045151344e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00045169759e[CPU  ] read_virtual_checks(): read beyond limit
+00045564728e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00045583201e[CPU  ] read_virtual_checks(): read beyond limit
+00045978174e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00045996647e[CPU  ] read_virtual_checks(): read beyond limit
+00046391765e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00046410180e[CPU  ] read_virtual_checks(): read beyond limit
+00046805331e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00046823804e[CPU  ] read_virtual_checks(): read beyond limit
+00047218958e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00047237431e[CPU  ] read_virtual_checks(): read beyond limit
+00047634364e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00047652779e[CPU  ] read_virtual_checks(): read beyond limit
+00048048658e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00048067131e[CPU  ] read_virtual_checks(): read beyond limit
+00048462671e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00048481086e[CPU  ] read_virtual_checks(): read beyond limit
+00048876692e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00048896079e[CPU  ] read_virtual_checks(): read beyond limit
+00049291725e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00049310198e[CPU  ] read_virtual_checks(): read beyond limit
+00049705931e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00049724346e[CPU  ] read_virtual_checks(): read beyond limit
+00050120161e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00050138576e[CPU  ] read_virtual_checks(): read beyond limit
+00050535099e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00050553572e[CPU  ] read_virtual_checks(): read beyond limit
+00050949799e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00050968214e[CPU  ] read_virtual_checks(): read beyond limit
+00051364693e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00051383166e[CPU  ] read_virtual_checks(): read beyond limit
+00051778710e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00051797183e[CPU  ] read_virtual_checks(): read beyond limit
+00052192850e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00052211265e[CPU  ] read_virtual_checks(): read beyond limit
+00052608300e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00052626773e[CPU  ] read_virtual_checks(): read beyond limit
+00053022569e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00053040984e[CPU  ] read_virtual_checks(): read beyond limit
+00053436849e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00053455264e[CPU  ] read_virtual_checks(): read beyond limit
+00053851207e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00053869680e[CPU  ] read_virtual_checks(): read beyond limit
+00054265945e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00054284360e[CPU  ] read_virtual_checks(): read beyond limit
+00054682402e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00054700875e[CPU  ] read_virtual_checks(): read beyond limit
+00055098426e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00055116899e[CPU  ] read_virtual_checks(): read beyond limit
+00055513256e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00055531671e[CPU  ] read_virtual_checks(): read beyond limit
+00055928088e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00055946561e[CPU  ] read_virtual_checks(): read beyond limit
+00056343038e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00056361453e[CPU  ] read_virtual_checks(): read beyond limit
+00056757963e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00056776378e[CPU  ] read_virtual_checks(): read beyond limit
+00057172957e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00057191430e[CPU  ] read_virtual_checks(): read beyond limit
+00057588367e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00057606782e[CPU  ] read_virtual_checks(): read beyond limit
+00058005423e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00058023896e[CPU  ] read_virtual_checks(): read beyond limit
+00058420409e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00058438882e[CPU  ] read_virtual_checks(): read beyond limit
+00058835522e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00058853937e[CPU  ] read_virtual_checks(): read beyond limit
+00059250700e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00059269173e[CPU  ] read_virtual_checks(): read beyond limit
+00059666005e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00059684420e[CPU  ] read_virtual_checks(): read beyond limit
+00060081312e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00060099727e[CPU  ] read_virtual_checks(): read beyond limit
+00060498033e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00060516506e[CPU  ] read_virtual_checks(): read beyond limit
+00060914976e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00060933391e[CPU  ] read_virtual_checks(): read beyond limit
+00061331370e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00061349843e[CPU  ] read_virtual_checks(): read beyond limit
+00061747118e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00061765533e[CPU  ] read_virtual_checks(): read beyond limit
+00062162841e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00062181314e[CPU  ] read_virtual_checks(): read beyond limit
+00062578678e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00062597151e[CPU  ] read_virtual_checks(): read beyond limit
+00062995932e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00063014347e[CPU  ] read_virtual_checks(): read beyond limit
+00063411928e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00063430401e[CPU  ] read_virtual_checks(): read beyond limit
+00063827999e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00063846414e[CPU  ] read_virtual_checks(): read beyond limit
+00064244561e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00064263034e[CPU  ] read_virtual_checks(): read beyond limit
+00064661565e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00064679980e[CPU  ] read_virtual_checks(): read beyond limit
+00065077897e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00065096312e[CPU  ] read_virtual_checks(): read beyond limit
+00065495633e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00065514183e[CPU  ] read_virtual_checks(): read beyond limit
+00065912356e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00065930848e[CPU  ] read_virtual_checks(): read beyond limit
+00066329127e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00066347677e[CPU  ] read_virtual_checks(): read beyond limit
+00066746066e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00066764558e[CPU  ] read_virtual_checks(): read beyond limit
+00067162921e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00067181471e[CPU  ] read_virtual_checks(): read beyond limit
+00067580302e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00067599824e[CPU  ] read_virtual_checks(): read beyond limit
+00068000418e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00068018910e[CPU  ] read_virtual_checks(): read beyond limit
+00068417569e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00068436119e[CPU  ] read_virtual_checks(): read beyond limit
+00068834883e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00068853375e[CPU  ] read_virtual_checks(): read beyond limit
+00069252226e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00069270776e[CPU  ] read_virtual_checks(): read beyond limit
+00069669703e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00069688195e[CPU  ] read_virtual_checks(): read beyond limit
+00070087139e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00070105689e[CPU  ] read_virtual_checks(): read beyond limit
+00070506038e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00070524530e[CPU  ] read_virtual_checks(): read beyond limit
+00070924007e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00070942557e[CPU  ] read_virtual_checks(): read beyond limit
+00071342409e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00071360901e[CPU  ] read_virtual_checks(): read beyond limit
+00071760211e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00071778703e[CPU  ] read_virtual_checks(): read beyond limit
+00072178073e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00072196623e[CPU  ] read_virtual_checks(): read beyond limit
+00072596094e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00072614586e[CPU  ] read_virtual_checks(): read beyond limit
+00073015449e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00073033999e[CPU  ] read_virtual_checks(): read beyond limit
+00073433594e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00073452086e[CPU  ] read_virtual_checks(): read beyond limit
+00073851733e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00073870283e[CPU  ] read_virtual_checks(): read beyond limit
+00074270384e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00074288876e[CPU  ] read_virtual_checks(): read beyond limit
+00074689316e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00074707866e[CPU  ] read_virtual_checks(): read beyond limit
+00075108790e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00075127282e[CPU  ] read_virtual_checks(): read beyond limit
+00075528641e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00075547191e[CPU  ] read_virtual_checks(): read beyond limit
+00075947312e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00075965804e[CPU  ] read_virtual_checks(): read beyond limit
+00076365981e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00076384531e[CPU  ] read_virtual_checks(): read beyond limit
+00076784759e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00076803251e[CPU  ] read_virtual_checks(): read beyond limit
+00077203549e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00077222099e[CPU  ] read_virtual_checks(): read beyond limit
+00077622797e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00077641289e[CPU  ] read_virtual_checks(): read beyond limit
+00078043629e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00078062179e[CPU  ] read_virtual_checks(): read beyond limit
+00078462765e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00078481257e[CPU  ] read_virtual_checks(): read beyond limit
+00078881944e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00078900436e[CPU  ] read_virtual_checks(): read beyond limit
+00079301159e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00079319709e[CPU  ] read_virtual_checks(): read beyond limit
+00079720501e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00079738993e[CPU  ] read_virtual_checks(): read beyond limit
+00080139854e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00080158404e[CPU  ] read_virtual_checks(): read beyond limit
+00080560661e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00080579153e[CPU  ] read_virtual_checks(): read beyond limit
+00080980457e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00080999007e[CPU  ] read_virtual_checks(): read beyond limit
+00081400587e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00081419079e[CPU  ] read_virtual_checks(): read beyond limit
+00081820331e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00081838881e[CPU  ] read_virtual_checks(): read beyond limit
+00082240177e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00082258669e[CPU  ] read_virtual_checks(): read beyond limit
+00082660025e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00082678575e[CPU  ] read_virtual_checks(): read beyond limit
+00083082298e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00083100790e[CPU  ] read_virtual_checks(): read beyond limit
+00083502351e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00083520843e[CPU  ] read_virtual_checks(): read beyond limit
+00083922398e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00083940890e[CPU  ] read_virtual_checks(): read beyond limit
+00084342858e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00084361350e[CPU  ] read_virtual_checks(): read beyond limit
+00084763541e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00084782091e[CPU  ] read_virtual_checks(): read beyond limit
+00085183396e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00085201888e[CPU  ] read_virtual_checks(): read beyond limit
+00085604577e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00085623127e[CPU  ] read_virtual_checks(): read beyond limit
+00086024559e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00086043051e[CPU  ] read_virtual_checks(): read beyond limit
+00086444561e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00086463111e[CPU  ] read_virtual_checks(): read beyond limit
+00086864681e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00086883173e[CPU  ] read_virtual_checks(): read beyond limit
+00087284821e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00087303371e[CPU  ] read_virtual_checks(): read beyond limit
+00087706673e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00087725165e[CPU  ] read_virtual_checks(): read beyond limit
+00088127934e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00088146484e[CPU  ] read_virtual_checks(): read beyond limit
+00088548437e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00088566929e[CPU  ] read_virtual_checks(): read beyond limit
+00088968969e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00088987519e[CPU  ] read_virtual_checks(): read beyond limit
+00089389628e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00089408120e[CPU  ] read_virtual_checks(): read beyond limit
+00089810289e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00089828839e[CPU  ] read_virtual_checks(): read beyond limit
+00090232394e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00090250886e[CPU  ] read_virtual_checks(): read beyond limit
+00090653194e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00090671744e[CPU  ] read_virtual_checks(): read beyond limit
+00091074390e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00091092882e[CPU  ] read_virtual_checks(): read beyond limit
+00091495925e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00091515447e[CPU  ] read_virtual_checks(): read beyond limit
+00091917768e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00091936260e[CPU  ] read_virtual_checks(): read beyond limit
+00092338632e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00092357182e[CPU  ] read_virtual_checks(): read beyond limit
+00092760967e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00092779459e[CPU  ] read_virtual_checks(): read beyond limit
+00093182045e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00093200537e[CPU  ] read_virtual_checks(): read beyond limit
+00093603116e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00093621666e[CPU  ] read_virtual_checks(): read beyond limit
+00094024345e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00094042837e[CPU  ] read_virtual_checks(): read beyond limit
+00094446043e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00094464593e[CPU  ] read_virtual_checks(): read beyond limit
+00094868228e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00094886720e[CPU  ] read_virtual_checks(): read beyond limit
+00095286856e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00095305406e[CPU  ] read_virtual_checks(): read beyond limit
+00095711699e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00095730191e[CPU  ] read_virtual_checks(): read beyond limit
+00096133598e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00096152148e[CPU  ] read_virtual_checks(): read beyond limit
+00096555624e[CPU  ] prefetch: EIP [00041000] > CS.limit [00040fff]
+00096574116e[CPU  ] read_virtual_checks(): read beyond limit
+00096620000p[XGUI ] >>PANIC<< POWER button turned off.
+00096620000i[CPU  ] CPU is in protected mode (active)
+00096620000i[CPU  ] CS.d_b = 32 bit
+00096620000i[CPU  ] SS.d_b = 32 bit
+00096620000i[CPU  ] | EAX=00ffffcc  EBX=000000ae  ECX=00000000  EDX=000001f0
+00096620000i[CPU  ] | ESP=00ffffc4  EBP=0002286c  ESI=000227f0  EDI=00000002
+00096620000i[CPU  ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af PF cf
+00096620000i[CPU  ] | SEG selector     base    limit G D
+00096620000i[CPU  ] | SEG sltr(index|ti|rpl)     base    limit G D
+00096620000i[CPU  ] |  CS:0008( 0001| 0|  0) 00000000 00000fff 1 1
+00096620000i[CPU  ] |  DS:0010( 0002| 0|  0) 00000000 00000fff 1 1
+00096620000i[CPU  ] |  SS:0010( 0002| 0|  0) 00000000 00000fff 1 1
+00096620000i[CPU  ] |  ES:0010( 0002| 0|  0) 00000000 00000fff 1 1
+00096620000i[CPU  ] |  FS:0017( 0002| 1|  3) 04000000 0000009f 1 1
+00096620000i[CPU  ] |  GS:0017( 0002| 1|  3) 04000000 0000009f 1 1
+00096620000i[CPU  ] | EIP=0000c711 (0000c711)
+00096620000i[CPU  ] | CR0=0x8000001b CR1=0 CR2=0x0401f0a0
+00096620000i[CPU  ] | CR3=0x00000000 CR4=0x00000000
+00096620000i[CPU  ] >> lea eax, dword ptr ss:[esp+0x4] : 8D442404
+00096620000i[CMOS ] Last time is 1340720445 (Tue Jun 26 22:20:45 2012)
+00096620000i[XGUI ] Exit
+00096620000i[     ] restoring default signal behavior
+00096620000i[CTRL ] quit_sim called with exit code 1
