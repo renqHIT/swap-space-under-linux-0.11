@@ -28,6 +28,8 @@
 #include <linux/mm.h>
 #include <asm/segment.h>
 
+#define LIBRARY_SIZE 0x00400000
+
 extern int sys_exit(int exit_code);
 extern int sys_close(int fd);
 
@@ -192,10 +194,12 @@ int do_execve(unsigned long * eip,long tmp,char * filename,
 	int sh_bang = 0;
 	unsigned long p=PAGE_SIZE*MAX_ARG_PAGES-4;
 
+//	printk("now in do_deceive\n");
 	if ((0xffff & eip[1]) != 0x000f)
 		panic("execve called from supervisor mode");
 	for (i=0 ; i<MAX_ARG_PAGES ; i++)	/* clear page-table */
 		page[i]=0;
+//	printk("after clear page-table\n");
 	if (!(inode=namei(filename)))		/* get executables inode */
 		return -ENOENT;
 	argc = count(argv);
@@ -222,6 +226,7 @@ restart_interp:
 		retval = -EACCES;
 		goto exec_error2;
 	}
+//	printk("after bread inode->i_dev\n");
 	ex = *((struct exec *) bh->b_data);	/* read exec-header */
 	if ((bh->b_data[0] == '#') && (bh->b_data[1] == '!') && (!sh_bang)) {
 		/*
@@ -287,6 +292,7 @@ restart_interp:
 		 */
 		old_fs = get_fs();
 		set_fs(get_ds());
+//		printk("before inode = namei(interp)\n");
 		if (!(inode=namei(interp))) { /* get executables inode */
 			set_fs(old_fs);
 			retval = -ENOENT;
@@ -295,7 +301,9 @@ restart_interp:
 		set_fs(old_fs);
 		goto restart_interp;
 	}
+//	printk("before brelse(bh)\n");
 	brelse(bh);
+//	printk("after brelse(bh)\n");
 	if (N_MAGIC(ex) != ZMAGIC || ex.a_trsize || ex.a_drsize ||
 		ex.a_text+ex.a_data+ex.a_bss>0x3000000 ||
 		inode->i_size < ex.a_text+ex.a_data+ex.a_syms+N_TXTOFF(ex)) {
@@ -320,17 +328,31 @@ restart_interp:
 		iput(current->executable);
 	current->executable = inode;
 	for (i=0 ; i<32 ; i++)
+	{
 		current->sigaction[i].sa_handler = NULL;
+		/*add by renq
+		current->sigaction[i].sa_mask = 0;
+		current->sigaction[i].sa_flags = 0;
+		if(current->sigaction[i].sa_handler != SIG_IGN)
+			current->sigaction[i].sa_handler = NULL;
+		end add by renq*/
+	}
+//	printk("before sys_close\n");
 	for (i=0 ; i<NR_OPEN ; i++)
 		if ((current->close_on_exec>>i)&1)
 			sys_close(i);
 	current->close_on_exec = 0;
+//	printk("before free_page_tables\n");
 	free_page_tables(get_base(current->ldt[1]),get_limit(0x0f));
 	free_page_tables(get_base(current->ldt[2]),get_limit(0x17));
 	if (last_task_used_math == current)
 		last_task_used_math = NULL;
 	current->used_math = 0;
 	p += change_ldt(ex.a_text,page)-MAX_ARG_PAGES*PAGE_SIZE;
+	/*add by renq
+	p += change_ldt(ex.a_text,page)-MAX_ARG_PAGES*PAGE_SIZE-LIBRARY_SIZE;
+	end add by renq*/
+//	printk("before create_tables\n");
 	p = (unsigned long) create_tables((char *)p,argc,envc);
 	current->brk = ex.a_bss +
 		(current->end_data = ex.a_data +
@@ -343,11 +365,14 @@ restart_interp:
 		put_fs_byte(0,(char *) (i++));
 	eip[0] = ex.a_entry;		/* eip, magic happens :-) */
 	eip[3] = p;			/* stack pointer */
+//	printk("do_execve success\n");
 	return 0;
 exec_error2:
 	iput(inode);
 exec_error1:
-	for (i=0 ; i<MAX_ARG_PAGES ; i++)
+	for (i=0 ; i<MAX_ARG_PAGES ; i++){
 		free_page(page[i]);
+		printk("free page : %d success\n",i);
+	}
 	return(retval);
 }

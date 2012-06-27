@@ -51,37 +51,6 @@ __asm__("cld ; rep ; movsl"::"S" (from),"D" (to),"c" (1024))
 unsigned char mem_map [ PAGING_PAGES ] = {0,};
 
 /*
- * Get physical address of first (actually last :-) free page, and mark it
- * used. If no free pages left, return 0.
- */
-
-/*
-unsigned long get_free_page(void)
-{
-register unsigned long __res asm("ax");
-
-__asm__("std ; repne ; scasb\n\t"
-	"jne 1f\n\t"
-	"movb $1,1(%%edi)\n\t"
-	"sall $12,%%ecx\n\t"
-	"addl %2,%%ecx\n\t"
-	"movl %%ecx,%%edx\n\t"
-	"movl $1024,%%ecx\n\t"
-	"leal 4092(%%edx),%%edi\n\t"
-	"rep ; stosl\n\t"
-	"movl %%edx,%%eax\n"
-	"1:"
-	:"=a" (__res)
-	:"0" (0),"i" (LOW_MEM),"c" (PAGING_PAGES),
-	"D" (mem_map+PAGING_PAGES-1)
-	);
-return __res;
-}
-*/
-
-
-
-/*
  * Free a page of memory at physical address 'addr'. Used by
  * 'free_page_tables()'
  */
@@ -367,7 +336,7 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	int nr[4];
 	unsigned long tmp;
 	unsigned long page;
-	//unsigned long new_page;
+	
 	int block,i;
 
 	//printk("now in do_no_page\n");
@@ -379,7 +348,7 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	tmp = address - current->start_code;//tmp是逻辑地址
 	
 	if (!current->executable || tmp >= current->end_data) {
-		get_empty_page(address);
+		get_empty_page(address);//
 		return;
 	}
 	if (share_page(tmp))

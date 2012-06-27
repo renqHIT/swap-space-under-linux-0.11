@@ -136,7 +136,6 @@ void main(void)		/* This really IS void, no error here. */
 	buffer_init(buffer_memory_end);
 	hd_init();
 	floppy_init();
-printk("before mem_init\n");
 	sti();
 	move_to_user_mode();
 
@@ -175,28 +174,30 @@ static char * envp[] = { "HOME=/usr/root", NULL };
 void init(void)
 {
 	int pid,i;
-	int swap_fd;// add by renq
+	int swap_log_fd, swap_fd;// add by renq
 	
-	printf("before setup drive info\n");
 	setup((void *) &drive_info);
 	(void) open("/dev/tty0",O_RDWR,0);
 	(void) dup(0);
 	(void) dup(0);
-	printf("before open /var/swap.log\n");
-	swap_fd = open("/var/swap.log",O_CREAT|O_TRUNC|O_WRONLY,0666);//swap.log文件描述符是几？ 3
-	printf("swap.log open success, fd = %d\n",swap_fd);
+	swap_log_fd = open("/var/swap.log",O_CREAT|O_TRUNC|O_WRONLY,0666);//swap.log文件描述符是几？ 3
+	printf("swap.log open success, fd = %d\n",swap_log_fd);
 	printf("%d buffers = %d bytes buffer space\n\r",NR_BUFFERS,
 		NR_BUFFERS*BLOCK_SIZE);
 	
 	printf("Free mem: %d bytes\n\r",memory_end-main_memory_start);
-	/*add by renq*/
-	//swap_fd = open("/var/swap",O_CREAT|O_TRUNC,0666);//swap的文件描述符是几？ 貌似是7
-	/*end add*/
+	
+	swap_fd = open("/var/swap",O_CREAT|O_TRUNC,0666);//swap的文件描述符是几？ 貌似是7
+	printf("swap file open success, fd = %d\n",swap_fd);
+	
 	if (!(pid=fork())) {
+	//	printf("fork() 1 success.\n");
 		close(0);
 		if (open("/etc/rc",O_RDONLY,0))
 			_exit(1);
-		execve("/bin/sh",argv_rc,envp_rc);
+		printf("open /etc/rc success\n");
+		execve("/bin/sh",argv_rc,envp_rc);//这里出错了！！！！
+		printf("execve /bin/sh sucess\n");
 		_exit(2);
 	}
 	if (pid>0)
@@ -214,12 +215,16 @@ void init(void)
 		(void) dup(0);
 			(void) dup(0);
 			_exit(execve("/bin/sh",argv,envp));
+	
 		}
-		while (1)
-			if (pid == wait(&i))
-				break;
-		printf("\n\rchild %d died with code %04x\n\r",pid,i);
+		//while (1)
+		//	if (pid == wait(&i))
+//;
+	//			break;
+		/*
+		printf("\n\rchild %d died with code %04x\n\r",pid,i);//
 		sync();
+		*/
 	}
 	_exit(0);	/* NOTE! _exit, not exit() */
 }

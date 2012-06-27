@@ -28,6 +28,36 @@ int SWAP_DEV = 0;				//交换设备号
 #define LAST_VM_PAGE (1024*1024)
 #define VM_PAGES (LAST_VM_PAGE - FIRST_VM_PAGE)
 
+unsigned long get_free_page(void)
+{
+register unsigned long __res asm("ax");
+
+repeat:
+	__asm__("std ; repne ; scasb\n\t"
+		"jne 1f\n\t"
+		"movb $1,1(%%edi)\n\t"
+		"sall $12,%%ecx\n\t"
+		"addl %2,%%ecx\n\t"
+		"movl %%ecx,%%edx\n\t"
+		"movl $1024,%%ecx\n\t"
+		"leal 4092(%%edx),%%edi\n\t"
+		"rep ; stosl\n\t"
+		"movl %%edx,%%eax\n"
+		"1:"
+		:"=a" (__res)
+		:"0" (0),"i" (LOW_MEM),"c" (PAGING_PAGES),
+		"D" (mem_map+PAGING_PAGES-1)
+		);
+	if(__res >= (16*1024*1024))//HIGH_MEMORY 暂时采用常量。这是请求的页高于物理内存大小的情况
+		goto repeat;
+	if(!__res && swap_out())//没有页，需要换出一部分，再重新申请内存
+	{
+		//printf("swap_out\n");
+		goto repeat;
+	}
+	return __res;
+}
+
 static int get_swap_page(void)
 {
 	int nr;
@@ -180,35 +210,6 @@ repeat:
        return __res;
 }
 */
-
-
-unsigned long get_free_page(void)
-{
-register unsigned long __res asm("ax");
-
-repeat:
-	__asm__("std ; repne ; scasb\n\t"
-		"jne 1f\n\t"
-		"movb $1,1(%%edi)\n\t"
-		"sall $12,%%ecx\n\t"
-		"addl %2,%%ecx\n\t"
-		"movl %%ecx,%%edx\n\t"
-		"movl $1024,%%ecx\n\t"
-		"leal 4092(%%edx),%%edi\n\t"
-		"rep ; stosl\n\t"
-		"movl %%edx,%%eax\n"
-		"1:"
-		:"=a" (__res)
-		:"0" (0),"i" (LOW_MEM),"c" (PAGING_PAGES),
-		"D" (mem_map+PAGING_PAGES-1)
-		);
-	if(__res >= (16*1024*1024))//HIGH_MEMORY 暂时采用常量。这是请求的页高于物理内存大小的情况
-		goto repeat;
-	if(!__res && swap_out())//没有页，需要换出一部分，再重新申请内存
-		goto repeat;
-	
-	return __res;
-}
 
 
 void init_swapping(void)

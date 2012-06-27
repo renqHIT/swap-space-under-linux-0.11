@@ -101,6 +101,10 @@ struct task_struct {
 	struct m_inode * pwd;
 	struct m_inode * root;
 	struct m_inode * executable;
+	//add by renq
+	struct m_inode * library;
+	struct task_struct *p_pptr, *p_cptr, *p_ysptr, *p_osptr;
+	//end add by renq	
 	unsigned long close_on_exec;
 	struct file * filp[NR_OPEN];
 /* ldt for this task 0 - zero 1 - cs 2 - ds&ss */
